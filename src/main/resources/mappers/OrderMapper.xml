@@ -176,7 +176,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        updateTime = now(),
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -198,4 +198,29 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByUserIdOrderNo" resultMap="BaseResultMap" parameterType="map">
+    SELECT <include refid="Base_Column_List"/>
+    FROM mmall_order
+    WHERE order_no=#{orderNo}
+    and user_id=#{userId}
+  </select>
+    <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="long">
+        SELECT <include refid="Base_Column_List" />
+        FROM mmall_order
+        WHERE order_no=#{orderNo}
+    </select>
+
+  <select id="selectByUserId" parameterType="int" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM mmall_order
+    WHERE user_id=#{userId}
+    ORDER BY create_time DESC
+  </select>
+
+  <select id="selectAllOrder" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM mmall_order
+    ORDER BY create_time DESC
+  </select>
 </mapper>
