@@ -2,7 +2,6 @@ package com.mmall.dao;
 
 import com.mmall.pojo.OrderItem;
 import org.apache.ibatis.annotations.Param;
-import sun.security.x509.OIDMap;
 
 import java.util.List;
 
