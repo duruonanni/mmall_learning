@@ -3,6 +3,8 @@
 <body>
 <h2>Hello World!</h2>
 
+<p>This mmall_learning project is deploy on tencent cloud.</p>
+
 <h1>用户登录</h1>
 <form action="/user/login.do" method="post">
     <input type="text" name="username" />
