@@ -4,7 +4,7 @@
     <groupId>com</groupId>
     <artifactId>mmall</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <name>mmall Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
@@ -19,6 +19,15 @@
     </properties>
 
     <dependencies>
+
+        <!-- lombok -->
+        <!--添加了scope:provided,说明这个jar包不会被打入war中,因为这个是在编译时起效的 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.tomcat</groupId>
@@ -178,9 +187,6 @@
             <version>2.0.1</version>
         </dependency>
 
-
-
-
         <!-- mybatis pager -->
 
         <dependency>
@@ -276,7 +282,50 @@
             </plugin>
         </plugins>
 
+        <!--maven环境隔离设置-->
+        <resources>
+            <resource>
+                <!--不同环境的存放路径,deploy.type在后面profiles有声明-->
+                <directory>src/main/resources.${deploy.type}</directory>
+                <!--排除路径中的jsp文件,因为jsp不需要分环境-->
+                <excludes>
+                    <exclude>*.jsp</exclude>
+                </excludes>
+            </resource>
+            <!--下面的resource文件都是公共的,去文件夹里面看就懂了-->
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
     </build>
 
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <!--使用dev作为默认环境-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <deploy.type>dev</deploy.type>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>beta</id>
+            <properties>
+                <deploy.type>beta</deploy.type>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <deploy.type>prod</deploy.type>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
