@@ -38,6 +38,8 @@ public class CooKieUtil {
         // 设置cookie的有效期,单位是秒,设置为-1为永久时间,这里的有效期设置为一年
         // 设置此属性后,cookie会写入硬盘,默认情况下是只写入内存中的
         cookie.setMaxAge(60 * 60 * 24 * 365);
+        // 增加cookie安全性,Tomcat7之后允许直接设置此属性
+        cookie.setHttpOnly(true);
         logger.info("write cookieName:{},cookieValue:{}",cookie.getName(),cookie.getValue());
         response.addCookie(cookie);
     }
