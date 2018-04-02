@@ -36,6 +36,9 @@ public class UserServiceImpl implements IUserService {
         }
 
         user.setPassword(StringUtils.EMPTY);
+        // 敏感密保问题与回答返回空,防止防止盗号
+        user.setQuestion(StringUtils.EMPTY);
+        user.setAnswer(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登陆成功",user);
     }
 
@@ -79,6 +82,9 @@ public class UserServiceImpl implements IUserService {
                 if(resultCount > 0) {
                     return ServerResponse.createByErrorMessage("该邮箱已注册");
                 }
+            }
+            else {
+                return ServerResponse.createByErrorMessage("传入数据类型错误,无法校验唯一性,请核对后传入合法校验类型(username|email)");
             }
         } else {
             return ServerResponse.createBySuccessMessage("参数错误");
