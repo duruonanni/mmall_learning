@@ -30,6 +30,7 @@ import com.mmall.vo.OrderVo;
 import com.mmall.vo.ShippingVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -553,4 +554,36 @@ public class OrderServiceImpl implements IOrderService {
         }
         return ServerResponse.createByErrorMessage("订单不存在");
     }
+
+    // v2.0 定时关单
+    @Override
+    public void closeOrder(int hour) {
+        Date closeDateTime = DateUtils.addHours(new Date(),-hour);
+        List<Order> orderList = orderMapper
+                .selectOrderStatusByCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(),DateTimeUtil.dateToStr(closeDateTime));
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList = orderItemMapper.getByOrderNo(order.getOrderNo());
+            for (OrderItem orderItem : orderItemList) {
+
+                // 使用主键加where条件,防止锁表,MySQL选择InnoDB存储方式
+                Integer stock = productMapper.selectStockByProductId(orderItem.getProductId());
+
+                // 如果订单中商品已经不存在表中,不进行回撤
+                if(stock == null) {
+                    continue;
+                }
+                // 将订单商品退回仓库中
+                Product product = new Product();
+                product.setId(orderItem.getProductId());
+                product.setStock(stock + orderItem.getQuantity());
+                productMapper.updateByPrimaryKeySelective(product);
+            }
+            // 实现订单关闭,设置Status=0
+            orderMapper.closeOrderByOrderId(order.getId());
+            logger.info("关闭订单OrderNo:{}",order.getOrderNo());
+        }
+
+    }
+
+
 }
