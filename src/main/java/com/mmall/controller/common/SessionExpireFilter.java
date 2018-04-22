@@ -4,7 +4,6 @@ import com.mmall.common.Const;
 import com.mmall.pojo.User;
 import com.mmall.util.CooKieUtil;
 import com.mmall.util.JsonUtil;
-import com.mmall.util.RedisPoolUtil;
 import com.mmall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 

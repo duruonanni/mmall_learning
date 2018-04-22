@@ -2,13 +2,26 @@
 ---
 ## 项目简介
 - 本项目是[慕课网 Java大牛 带你从0到上线开发企业级电商项目](http://coding.imooc.com/class/96.html)的学习成果展示. 
-- 是使用ssm框架搭建的电商项目后台接口
+- 目前项目已进展到完成v2.0分布式演进的开发,演进方式参考了[慕课网 Java企业级电商项目架构演进之路 Tomcat集群与Redis分布式](https://coding.imooc.com/class/162.html)的课程. 
+- 是使用ssm框架搭建的电商项目后台接口,v2.0演进覆盖了Tomcat集群+Nginx负载均衡+Redis分布式等技能点
 - 感谢[网易云音乐](http://music.163.com/#/playlist?id=426490641&userid=9567158 "歌单 孔祥羽看书用")提供舒缓音乐让我专注Coding
-- 项目开发过程中的问题记录 : https://github.com/duruonanni/mmall_learning/issues/3
+- 项目开发过程中的问题记录 : 
+    - v1.0 : https://github.com/duruonanni/mmall_learning/issues/3
+    - v2.0 : https://github.com/duruonanni/mmall_learning/issues/4
 ## 版本说明
+> 时间 : 2018年4月22日
+> - 完成v2.0分支合并
+> - 更新此readme
+
 > 时间 : 2018年3月19日
 > - 项目v1.0已完成开发与上线
 > - 在线测试接口 : http://www.duruonanni.site/index.jsp
+
+> 时间 : 2018年4月09日
+> - 完成项目v2.0分布式技术的演进
+> - ~~在线测试接口 : http://www.duruonanni.site/index.jsp~~
+      > - 线上接口由于服务器负担较重,现已将项目从服务器撤下
+      > - 仅留github源码做记录和交流使用
 
 ---
 ## 项目说明
@@ -23,6 +36,33 @@
 - nginx : 1.10.2
 - vsftpd : vsftpd-2.2.2-24.el6.x86_64
 - 其他技术 : Guava/Jackson/JodaTime/Simditor/logback/Alipay
+### 技术选型扩充(v2.0)
+- 应用服务器集群 :
+    - nginx反向代理
+    - Tomcat*2(单机多应用)
+- 多环境部署 :
+    - Maven环境隔离(实现本地和线上两套配置文件部署)
+- 单点登录实现 :
+    - Redis缓存
+    - Jedis API封装
+    - 零侵入式单点登录 : Spring Session
+- 统一权限验证 :
+    - SpringMVC Interceptor
+- 登录验证 :
+    - SpringMVC Filter构建session时间重置过滤器
+    - Spring Schedule实现定时关单
+        - 依赖Cron表达式
+- 高效缓存
+    - redisSharded算法实现分布式redis应用
+- JSON多泛型序列化与反序列化
+    - Jackson API封装实现
+- URL部分实现RESTful风格
+    - 商品的浏览与搜索
+- 分布式项目在服务器上的上线
+    - 简单shell脚本实现自动化更新和上线
+### 待补充技术
+- Spring Schedule+Redisson分布式锁构建分布式任务调度
+
 ---
 ## 模块说明和技术要点
 - 模块在线测试地址 : https://github.com/duruonanni/mmall_learning/wiki
