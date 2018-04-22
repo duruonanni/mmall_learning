@@ -152,12 +152,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="checkUsername" resultType="int" parameterType="string" >
+  <select id="checkUsername" resultType="java.lang.Integer" parameterType="string" >
     SELECT count(1) FROM mmall_user
     WHERE username = #{username}
   </select>
 
-  <select id="checkEmail" resultType="int" parameterType="string" >
+  <select id="checkEmail" resultType="java.lang.Integer" parameterType="string" >
     SELECT count(1) FROM mmall_user
     WHERE email = #{email}
   </select>
@@ -170,11 +170,11 @@
     AND password = #{password}
   </select>
 
-  <select id="selectQuestionByUsername" resultType="string" parameterType="string">
+  <select id="selectQuestionByUsername" resultType="java.lang.String" parameterType="string">
     SELECT question FROM mmall_user WHERE username=#{username}
   </select>
 
-  <select id="checkAnswer" resultType="int" parameterType="map">
+  <select id="checkAnswer" resultType="java.lang.Integer" parameterType="map">
     SELECT count(1) FROM mmall_user WHERE username=#{username}
     AND question=#{question}
     AND answer=#{answer}
@@ -185,12 +185,12 @@
     WHERE username = #{username}
   </update>
 
-  <select id="checkPassword" resultType="int" parameterType="map">
+  <select id="checkPassword" resultType="java.lang.Integer" parameterType="map">
     SELECT count(1) FROM mmall_user
     WHERE id =#{userId} AND password=#{password}
   </select>
 
-  <select id="checkEmailByUserId" parameterType="map" resultType="int">
+  <select id="checkEmailByUserId" parameterType="map" resultType="java.lang.Integer">
     SELECT count(1) FROM mmall_user
     WHERE email=#{email} AND id != #{userId}
   </select>

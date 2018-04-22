@@ -8,7 +8,9 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.mmall" annotation-config="true"/>
+    <context:component-scan base-package="com.mmall.controller" annotation-config="true" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
 
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -39,5 +41,16 @@
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
 
+    <!--配置权限拦截器-->
+    <mvc:interceptors>
+        <!--定义在这里的所有都会被拦截-->
+        <mvc:interceptor>
+            <mvc:mapping path="/manage/**"/>
+            <!--排除掉登录的controller,防止拦截后无法执行登录-->
+            <!--将login.do的排除方案放到AuthorityInterceptor中,更统一,也方便打印日志-->
+            <!--<mvc:exclude-mapping path="/manage/user/login.do"/>-->
+            <bean class="com.mmall.controller.common.intercepter.AuthorityInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>
